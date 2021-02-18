@@ -1,6 +1,6 @@
 import os
-import argparse 
-import sys 
+import argparse
+import sys
 
 normal_color = "\33[00m"
 info_color = "\033[1;33m"
@@ -36,7 +36,7 @@ def checkArgs():
                             help="Word to use to create a new dict")
         parser.add_argument('-y', "--years", action="store_true",
                                                 dest='years',
-                            help="Add years from 2005 to 2021 at the final of your string")
+                            help="Add years from 2000 to 2021 at the final of your string")
         parser.add_argument('-r', "--replace", action="store_true",
                                                 dest='replace',
                             help="Replace vowels with numbers")
@@ -44,15 +44,31 @@ def checkArgs():
 						dest='generic',
                             help="Generic words like months of the year")
         args = parser.parse_args()
-        
+
         return args
 
 #Años
 def tiempo(word, filename):
 	print(green_color + "[" + red_color+ "+" + green_color +"] " + whiteB_color + "Generating dict with years...")
 	fichero = open(filename, "w")
-	ano = 2005
+	cont = 0
+	while (cont <= 21):
+		if (cont <= 9):
+		    fichero.write(word+"0"+str(cont)+"\n")
+		    fichero.write(word+"0"+str(cont)+"!"+"\n")
+		    fichero.write(word+"0"+str(cont)+"#"+"\n")
+		else:
+		    fichero.write(word+str(cont)+"\n")
+		    fichero.write(word+str(cont)+"!"+"\n")
+		    fichero.write(word+str(cont)+"#"+"\n")
+		cont = cont + 1
+
+
+
+
+	ano = 2000
 	flag = 0
+
 	inicio = word.find("20", len(word)-5)
 	while (ano <= 2021):
 		if (inicio == -1):
@@ -66,11 +82,15 @@ def tiempo(word, filename):
 			fichero.write(newword+str(ano)+"\n")
 			fichero.write(newword+str(ano)+"!\n")
 			fichero.write(newword+str(ano)+"#\n")
+
 		elif (flag == 0):
 			fichero.write(word+"!\n")
 			fichero.write(word+"#\n")
 			flag = 1
 		ano = ano + 1
+
+
+
 	fichero.close()
 
 
@@ -84,7 +104,7 @@ def chartoint(word, printornot, filename):
 	newword = ""
 	#how many vowels has the word?
 	for letter in word:
-		if (letter == "a" or letter == "A" or letter == "e" or letter == "E" or letter == "i" or letter == "I" or letter == "o" or letter == "O" or letter == "u" or letter == "U"): 
+		if (letter == "a" or letter == "A" or letter == "e" or letter == "E" or letter == "i" or letter == "I" or letter == "o" or letter == "O" or letter == "u" or letter == "U"):
 			letter = "%"
 
 		newword = newword + letter
@@ -129,15 +149,15 @@ def arroba(word, filename):
 	fichero.close()
 def generico(filename):
 	fichero = open(filename, "a")
-	elementos = [ "enero", "january", "febrero", "february", "marzo", "march", "abril", "april", "junio", "june", "julio", "july", "agosto", "august", "septiembre", "september", "octubre", "october", "noviembre", "november", "diciembre", "december", "primavera", "spring", "verano", "summer", "otoño", "autumn", "invierno", "winter" ] 
+	elementos = [ "enero", "january", "febrero", "february", "marzo", "march", "abril", "april", "junio", "june", "julio", "july", "agosto", "august", "septiembre", "september", "octubre", "october", "noviembre", "november", "diciembre", "december", "primavera", "spring", "verano", "summer", "otoño", "autumn", "invierno", "winter" ]
 
 	cont = 0
-	for item in elementos: 
+	for item in elementos:
 		ano = 2005
 		while (ano <= 2021):
 			fichero.write(elementos[cont]+str(ano)+"\n")
 			fichero.write(elementos[cont]+str(ano)+"!\n")
-			fichero.write(elementos[cont]+str(ano)+"#\n")		
+			fichero.write(elementos[cont]+str(ano)+"#\n")
 			fichero.write(elementos[cont].capitalize()+str(ano)+"\n")
 			fichero.write(elementos[cont].capitalize()+str(ano)+"\n")
 			fichero.write(elementos[cont].capitalize()+str(ano)+"\n")
@@ -151,7 +171,7 @@ def generico(filename):
 #Main
 if __name__ == "__main__":
         args = checkArgs()
- 
+
         if (args.file):
                 if (args.word):
                         word = args.word
@@ -162,8 +182,8 @@ if __name__ == "__main__":
                         if (inicio == -1):
                                 filename = filename+".txt"
                 else:
-                        filename = "dict.txt" 
-	
+                        filename = "dict.txt"
+
                 if (args.years):
                         if (args.word):
                                 tiempo(word, filename)
@@ -174,8 +194,8 @@ if __name__ == "__main__":
                         generico(filename)
                 if (args.word):
                         arroba(word, filename)
-	
+
                 print(green_color + "[" + red_color+ "+" + green_color +"] " + banner_color + "Dictionary was saved in " + green_color + filename  + banner_color + " file!")
-	
+
         else:
                 print (red_color + "[-] Please use -w option to introduce a word to make a dict")
